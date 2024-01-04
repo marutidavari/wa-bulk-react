@@ -1,0 +1,115 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.main{
+  display: flex;
+    flex-direction: column;
+}
+.header{
+  background-color: #00a8a1;
+  display: grid;
+  color: white;
+}
+.whatsapp_nos{
+  display: flex;
+  flex-basis: content;
+  gap: 20px;
+}
+.numbersTextarea{
+  height: 50vh;
+  width: 100%;
+  resize: none;
+  border: 1px solid #ccc;
+  outline: none !important;
+  box-shadow: 2px 0 5px #585e64;
+}
+.messageTextarea:focus, .numbersTextarea:focus{
+
+  outline: none !important;
+  /* border:1px solid red; */
+  box-shadow: 0 0 10px #719ECE;
+}
+
+.messageTextarea{
+  height: 30vh;
+  width: 30vw;
+  resize: none;
+  border: 1px solid #ccc;
+  outline: none !important;
+  box-shadow: 2px 0 5px #585e64;
+}
+
+.main-whatsapp-terminal{
+  display: flex;
+  height: 100vh;
+}
+.whatsapp_authorizations{
+  width: 50%;
+  height: 70%;
+}
+
+/* bUTTONS */
+.glow-on-hover {
+  width: 100%;
+  height: 40px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, #00ffe1, #ff7300, #487cd5);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: #000
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
