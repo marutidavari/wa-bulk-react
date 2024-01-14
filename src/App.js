@@ -11,6 +11,8 @@ function App() {
   const [status, setStatus] = useState("");
   const [readyMessage, setReadyMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState(null);
+  const [filePath, setFilePath] = useState("");
   // const [numbersFromTextarea, setNumbersFromTextarea] = useState([]);
 
   useEffect(() => {
@@ -38,27 +40,33 @@ function App() {
     };
   }, []);
 
-  const sendAllNumbers = async () => {
-    try {
-      const numbersText = document.querySelector(".numbersTextarea").value;
-      const message = document.querySelector(".messageTextarea").value;
-      console.log(message)
-      const numbers = numbersText
-        .split(",")
-        .map((number) => number.trim())
-        .filter((number) => number.length === 10);
-      console.log(numbers);
-
-      const response = await axios.post("http://localhost:3001/sendnumbers", {
-        numbers: numbers,
-        message:message,
-      });
-      console.log("Numbers sent successfully:", response.data);
-
-    } catch (error) {
-      console.error("Error sending numbers:", error.message);
-    }
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
   };
+  // const sendAllNumbers = async () => {
+  //   try {
+  //     const numbersText = document.querySelector(".numbersTextarea").value;
+  //     const message = document.querySelector(".messageTextarea").value;
+  //     console.log(message)
+  //     const numbers = numbersText
+  //       .split(",")
+  //       .map((number) => number.trim())
+  //       .filter((number) => number.length === 10);
+  //     console.log(numbers);
+
+  //     const response = await axios.post("http://localhost:3001/sendnumbers", {
+  //       numbers: numbers,
+  //       message:message,
+  //       filePath:file,
+  //     });
+  //     console.log("Numbers sent successfully:", response.data);
+
+  //   } catch (error) {
+  //     console.error("Error sending numbers:", error.message);
+  //   }
+  // };
+
 
   const generateQRCode = async () => {
     try {
@@ -74,6 +82,48 @@ function App() {
       setIsLoading(false);
     }
   };
+
+
+  const sendAllNumbers = async () => {
+    try {
+      const numbersText = document.querySelector(".numbersTextarea").value;
+      const message = document.querySelector(".messageTextarea").value;
+
+      const numbers = numbersText
+        .split(",")
+        .map((number) => number.trim())
+        .filter((number) => number.length === 10);
+
+      // Check if a file is selected
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Send file to the server
+        const response = await axios.post("http://localhost:3001/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        // Update state with the returned file path
+        setFilePath(response.data.filePath);
+        console.log("File path:", filePath);
+        const responseofmsg = await axios.post("http://localhost:3001/sendnumbers", {
+          numbers: numbers,
+          message: message,
+          filePath: filePath,
+        });
+        console.log("Numbers sent successfully:", responseofmsg.data);
+      } else {
+        console.log("No file selected");
+      }
+
+    } catch (error) {
+      console.error("Error sending numbers:", error.message);
+    }
+  };
+
 
   const logoutWhatsapp = async () => {
     try {
@@ -108,6 +158,11 @@ function App() {
               <textarea
                 className="messageTextarea"
               />
+            </div>
+
+            <div>
+              <h1>File Upload Example</h1>
+              <input type="file" onChange={handleFileChange} />
             </div>
 
           </div>
